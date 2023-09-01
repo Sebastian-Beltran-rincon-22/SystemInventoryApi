@@ -1,7 +1,7 @@
 {
-  "name": "todo",
+  "name": "inventory-system",
   "version": "1.0.0",
-  "description": "ToDo to organize the time",
+  "description": "inventory system organiz",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "keywords": [],
-  "author": "sergio nicolas paez duque ",
+  "author": "Sebastian Beltran, Daniel Molina ",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.44.0",
