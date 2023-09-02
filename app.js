@@ -6,7 +6,6 @@ const superAdmin = require('./routers/user/superAdmin')
 
 
 const app = express()
-createAdmin()
 
 app.use(cors({
     origin:"*",
@@ -21,8 +20,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 
-app.use('/api/admins',admin)
 app.use('/api/superAdmin',superAdmin)
+app.use('/api/users', admin)
 
 
 
