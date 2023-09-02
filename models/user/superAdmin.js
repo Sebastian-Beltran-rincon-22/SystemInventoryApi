@@ -5,7 +5,12 @@ const supAdminSchema = new Schema({
 
     name:{
         type: String
+    },
+    roles:{
+        type:String,
+        enum: ['admin', 'superadmin'],
+        default: 'admin'
     }
-},{versionKey:true})
+},{versionKey:false})
 
 module.exports = mongoose.model('SuperAdmin',supAdminSchema)
