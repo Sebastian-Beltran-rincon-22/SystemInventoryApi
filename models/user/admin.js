@@ -1,4 +1,5 @@
 const mongoose = require ('mongoose')
+const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
 const adminSchema = new Schema ({
@@ -28,6 +29,7 @@ const adminSchema = new Schema ({
         type: Date,
         default: null
     },
+
     superAdmin:{
         ref: 'SuperAdmin',
         type: mongoose.Schema.Types.ObjectId
