@@ -1,11 +1,13 @@
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const express = require('express')
-const admin = require('./routers/user/admin')
-const superAdmin = require('./routers/user/superAdmin')
+const user = require('./routers/user/user')
+const admin = require('./routers/user/auth')
+const creatingRole = require ('./libs/initialSetup')
 
 
 const app = express()
+creatingRole.createRoles()
 
 app.use(cors({
     origin:"*",
@@ -20,8 +22,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 
-app.use('/api/superAdmin',superAdmin)
-app.use('/api/users', admin)
+app.use('/api/superAdmin',admin)
+app.use('/api/users', user)
 
 
 

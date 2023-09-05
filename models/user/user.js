@@ -2,7 +2,7 @@ const mongoose = require ('mongoose')
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
-const adminSchema = new Schema ({
+const userSchema = new Schema ({
 
     nickName:{
         type: String,
@@ -10,12 +10,12 @@ const adminSchema = new Schema ({
         unique: true,
         maxLenth: 100
     },
-    emailUs:{
+    email:{
         type: String,
         unique: true,
         validate: {
-            validator: function(emailUs) {
-                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(emailUs);
+            validator: function(email) {
+                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email);
             },
             message: props => `${props.value} is not a valid email`
         },
@@ -30,24 +30,24 @@ const adminSchema = new Schema ({
         default: null
     },
 
-    superAdmin:{
-        ref: 'SuperAdmin',
+    roles:[{
+        ref: "Admin",
         type: mongoose.Schema.Types.ObjectId
-    },
+    }],
 
     
 },{versionKey:false}) 
 
-adminSchema.statics.encryptPassword  = async (password) => {
+userSchema.statics.encryptPassword  = async (password) => {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
 }
 
-adminSchema.statics.comparePassword = async (password, receivedPassword) => {
+userSchema.statics.comparePassword = async (password, receivedPassword) => {
     return await bcrypt.compare(password, receivedPassword)
 }
 
-adminSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
     const admin = this;
     if (!admin.isModified("password")) {
         return next();
@@ -57,5 +57,5 @@ adminSchema.pre("save", async function (next) {
     next();
 })
 
-module.exports = mongoose.model('Admin',adminSchema)
+module.exports = mongoose.model('User',userSchema)
 

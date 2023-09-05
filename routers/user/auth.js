@@ -1,6 +1,7 @@
 const express = require ('express')
 const router = express.Router()
-const superAdminCon = require('../../controllers/user/superAdmin')
+const adminController = require('../../controllers/user/auth')
+const verifySignup = require ('../../middlewares/verifySignup');
 
 router.use((req, res, next) => {
     res.header(
@@ -10,8 +11,10 @@ router.use((req, res, next) => {
     next();
     });
 
-router.post('/signup',superAdminCon.signup)
-router.delete('/:id', superAdminCon.deleteUser)
+router.post('/signup',[verifySignup.checkRoleExist],adminController.signup)
+
+
+router.delete('/:id', adminController.deleteUser)
 
 // router.get('/', superAdmincontroller.getAdmins)
 // router.get('/:id', superAdmincontroller.getById)
