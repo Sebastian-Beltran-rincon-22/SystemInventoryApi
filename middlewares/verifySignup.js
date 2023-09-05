@@ -1,4 +1,4 @@
-const {ROLE} = require('../models/user/role');
+const {ROLE} = require ('../models/user/Role')
 
 const verifySignup = {
     checkRoleExist: (req, res, next) => {
