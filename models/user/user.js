@@ -32,8 +32,10 @@ const userSchema = new Schema ({
 
     roles:[{
         ref: "Admin",
-        type: mongoose.Schema.Types.ObjectId
-    }],
+        type: mongoose.Schema.Types.ObjectId,
+        default: "user"
+    },
+    ],
 
     
 },{versionKey:false}) 
@@ -48,12 +50,12 @@ userSchema.statics.comparePassword = async (password, receivedPassword) => {
 }
 
 userSchema.pre("save", async function (next) {
-    const admin = this;
-    if (!admin.isModified("password")) {
+    const user = this;
+    if (!user.isModified("password")) {
         return next();
     }
-    const hash = await bcrypt.hash(admin.password, 10);
-    admin.password = hash;
+    const hash = await bcrypt.hash(user.password, 10);
+    user.password = hash;
     next();
 })
 
