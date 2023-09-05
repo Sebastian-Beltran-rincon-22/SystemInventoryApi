@@ -27,9 +27,15 @@ const adminSchema = new Schema ({
     lastConnect:{
         type: Date,
         default: null
-    }
+    },
+    superAdmin:{
+        ref: 'SuperAdmin',
+        type: mongoose.Schema.Types.ObjectId
+    },
+
     
 },{versionKey:false}) // SUPER ADMIN QUE ESTE BIEN ROTO => post para crear admins chiquitos
 
-module.exports = mongoose.model('User',adminSchema)
+
+module.exports = mongoose.model('Admin',adminSchema)
 
