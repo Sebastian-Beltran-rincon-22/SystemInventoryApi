@@ -1,5 +1,7 @@
 const User = require ('../../models/user/user')
 const {Admin} = require('../../models/user/Role')
+const Config = require('../../config')
+const jwt = require('jsonwebtoken')
 
 const userController = {
     
@@ -19,14 +21,20 @@ const userController = {
             user.password = await User.encryptPassword(user.password)
 
             const savedUser = await user.save()
-            
+
+            const token = jwt.sign({id: savedUser._id}, Config.SECRET,{
+                expiresIn: 86400
+            })
 
             return res.status(200).json({
+                token,
+                savedUser:{
                 _id: savedUser._id,
                 userName: savedUser.userName,
                 email: savedUser.email,
                 password: savedUser.password,
                 roles: savedUser.roles,
+                }
             })
 
         } catch (error) {

@@ -42,6 +42,26 @@ const adminController ={
     }
     },
 
+    signin: async (req,res) =>{
+        try {
+            
+            const userFound = await User.findOne({email: req.body.email}).populate("roles")
+            if (!userFound) return res.status(400).json({message: 'user not found '})
+
+            const mathPassword = await User.comparePassword(req.body.password, userFound.password)
+            if (!mathPassword) return res.status(401).json({token: null, message: 'invalid password '})
+
+            const token = jwt.sign({id: userFound._id},Config.SECRET,{
+                expiresIn: 86400
+            })
+
+            res.json({token})
+
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
     deleteUser: async (req, res) => {
         try {
             const { id } = req.params
