@@ -1,44 +1,47 @@
 const jwt = require('jsonwebtoken')
 const Config = require('../config')
-const Admin = require('../models/user/admin')
-const SuperAdmin = require('../models/user/superAdmin')
+const User = require('../models/user/user')
+const {Admin} = require('../models/user/role')
 
 const authJwt = {
     
-    verifyToken : async(req,res,next) =>{
+        verifyToken : async(req,res, next) =>{
+        
+        
+            let token = req.headers['x-access-token']
 
-        let token = req.headers['x-access-token']
+            if(!token) return res.status(403).json({message: 'no token'})
+        
+            try {
+                const decoded = jwt.verify(token,Config.SECRET)
+                req.userId = decoded.id
 
-        if(!token) return res.status(403).json({message: 'no token'})
+                const user = await User.findById(req.userId,{password: 0})
+                if (!user) return res.status(404).json({message: 'no user found'})
 
-        try{
-            const decoded = jwt.verify(token,Config.SECRET)
-            req.adminId = decoded.id 
+                next()
 
-            const admin = await Admin.findById(req.adminId,{password: 0})
-            if (!admin) return res.status(404).json({message: 'no admin found'})
-            
-            next()
-        }catch (error){
+            }catch (error){
             res.status(401).json({message: 'Unauthorized'})
         }
     },
 
-    isSuperAdmin : async (req,res,next) =>{
+    isAdmin : async (req,res, next) =>{
         try{
-
-            const admin = await Admin.findById(req.adminId)
-            const superAdmin = await SuperAdmin.find({_id:{$in: admin.superAdmin}})
-
-            for (let i = 0; i < superAdmin.length; i++){
-                if(superAdmin[i].name === 'superadmin'){
-                    next()
-                    return
-                }
+    
+        
+        const user = await User.findById(req.userId)
+        const roles = await Admin.find({_id: {$in: user.roles}})
+    
+        for (let i = 0; i < roles.length; i++){
+            if(roles[i].name === "admin") {
+                next()
+                return
             }
-
-            return res.status(403).json({message: 'Require superAdmin role'})
-        }catch(error){
+        }
+        
+        return res.status(403).json({message: "Require Admin role"})
+        } catch(error){
             console.log(error);
             return res.status(500).send({ message: error });
         }
