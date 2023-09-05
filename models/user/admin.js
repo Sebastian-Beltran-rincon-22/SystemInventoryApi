@@ -1,4 +1,5 @@
 const mongoose = require ('mongoose')
+const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
 const adminSchema = new Schema ({
@@ -28,14 +29,33 @@ const adminSchema = new Schema ({
         type: Date,
         default: null
     },
+
     superAdmin:{
         ref: 'SuperAdmin',
         type: mongoose.Schema.Types.ObjectId
     },
 
     
-},{versionKey:false}) // SUPER ADMIN QUE ESTE BIEN ROTO => post para crear admins chiquitos
+},{versionKey:false}) 
 
+adminSchema.statics.encryptPassword  = async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+}
+
+adminSchema.statics.comparePassword = async (password, receivedPassword) => {
+    return await bcrypt.compare(password, receivedPassword)
+}
+
+adminSchema.pre("save", async function (next) {
+    const admin = this;
+    if (!admin.isModified("password")) {
+        return next();
+    }
+    const hash = await bcrypt.hash(admin.password, 10);
+    admin.password = hash;
+    next();
+})
 
 module.exports = mongoose.model('Admin',adminSchema)
 

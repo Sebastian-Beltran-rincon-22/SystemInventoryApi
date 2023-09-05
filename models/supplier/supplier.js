@@ -26,6 +26,6 @@ const supplierSchema = new Schema({
         },
         required: [true, 'user email required']
     }
-})
+},{versionKey:false})
 
 module.exports = mongoose.model('Supplier',supplierSchema)
