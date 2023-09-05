@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const Config = require('../config')
 const User = require('../models/user/user')
-const {Admin} = require('../models/user/role')
+const {Admin} = require('../models/user/Role')
 
 const authJwt = {
     

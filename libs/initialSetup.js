@@ -1,4 +1,4 @@
-const {Admin} = require('../models/user/role')
+const {Admin} = require('../models/user/Role')
 
 
 
@@ -13,8 +13,8 @@ const creatingRole = {
             if (count > 0) return
 
             const values = await Promise.all([
-                new Admin ({name: 'user'}).save(),
-                new Admin ({name: 'admin'}).save()
+                new Admin ({name: "user"}).save(),
+                new Admin ({name: "admin"}).save()
             ])
 
             console.log(values)

@@ -1,7 +1,7 @@
 const Config = require('../../config')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user/user')
-const {Admin} = require('../../models/user/role')
+const {Admin} = require('../../models/user/Role')
 
 
 const adminController ={
@@ -22,11 +22,11 @@ const adminController ={
 
             userRegis.roles = foundAdmin.map((role) => role._id)
         } else{
-            const role = await Admin.findOne({name: 'user'}) 
+            const role = await Admin.findOne({name: "user" }) 
 
             if (role) {
                 console.log(role._id);
-                userRegis.admin = [role._id];
+                userRegis.roles = [role._id];
             } else {
                 console.log("No 'user' admin found.");
             }
