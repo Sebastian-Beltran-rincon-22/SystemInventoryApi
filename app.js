@@ -8,6 +8,7 @@ const creatingRole = require ('./libs/initialSetup')
 
 const app = express()
 creatingRole.createRoles()
+creatingRole.adminprint()
 
 app.use(cors({
     origin:"*",
