@@ -1,5 +1,6 @@
 const {Admin} = require('../models/user/Role')
 const User = require('../models/user/user')
+const Config = require('../config')
 
 
 
@@ -27,19 +28,19 @@ const creatingRole = {
         try {
 
 
-            const userFound = await User.findOne({ email: config.ADMIN_EMAIL });
+            const userFound = await User.findOne({ email: Config.ADMIN_EMAIL });
             console.log(userFound);
 
             if (userFound) return;
 
             
-            const admin = await Admin.find({ name: { $in: ["admin"] } });
+            const admin = await Admin.findOne({name: 'admin'});
 
             const userRegis = await User.create({
-                userName: config.ADMIN_USERNAME,
-                email: config.ADMIN_EMAIL,
-                password: config.ADMIN_PASSWORD,
-                admin: admin.map((admins) => admins._id)
+                nickName: Config.ADMIN_USERNAME,
+                email: Config.ADMIN_EMAIL,
+                password: Config.ADMIN_PASSWORD,
+                roles: [admin._id]
             });
 
             console.log(`New user created: ${userRegis.email}`);
