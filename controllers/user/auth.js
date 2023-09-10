@@ -55,7 +55,6 @@ const adminController ={
             if (user){
                 user.lastConnect = new Date()
                 await user.save()
-                res.send('Exit session start')
             } else {
                 res.status(404).send('User not found')
             }
@@ -64,12 +63,13 @@ const adminController ={
                 expiresIn: 86400
             })
 
-            res.json({token})
+            res.json({token, savedUser: {_id: savedUser._id, lastConnect, roles}})
 
         } catch (error) {
             console.log(error)
         }
     },
+
 
     deleteUser: async (req, res) => {
         try {
