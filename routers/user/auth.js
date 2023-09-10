@@ -12,6 +12,7 @@ router.use((req, res, next) => {
     });
 
 router.post('/signup',[verifySignup.checkRoleExist],adminController.signup)
+router.post('/signin',[verifySignup.checkRoleExist],adminController.signin)
 
 
 router.delete('/:id', adminController.deleteUser)
