@@ -51,6 +51,15 @@ const adminController ={
             const mathPassword = await User.comparePassword(req.body.password, userFound.password)
             if (!mathPassword) return res.status(401).json({token: null, message: 'invalid password '})
 
+            const user = await User.findOne({ email: req.body.email})
+            if (user){
+                user.lastConnect = new Date()
+                await user.save()
+                res.send('Exit session start')
+            } else {
+                res.status(404).send('User not found')
+            }
+
             const token = jwt.sign({id: userFound._id},Config.SECRET,{
                 expiresIn: 86400
             })
@@ -71,7 +80,7 @@ const adminController ={
             return res.status(500).json({ msg: error })
         }
     }
-}     
+}
 
 
 module.exports = adminController
