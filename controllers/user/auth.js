@@ -36,7 +36,7 @@ const adminController ={
         const token = jwt.sign({id: savedUser._id}, Config.SECRET,{
             expiresIn: 86400 
         })
-        res.status(200).json({token, savedUser: { _id: savedUser._id, nickName, email, password}})
+        res.status(200).json({token, savedUser: { _id: savedUser._id, nickName, email, password, roles}})
     }catch(error){
         return res.status(500).json(error.message)
     }
@@ -63,7 +63,7 @@ const adminController ={
                 expiresIn: 86400
             })
 
-            res.json({token, userFound: {_id: userFound._id}})
+            res.json({token, userFound: {_id: userFound._id, roles: userFound.roles}})
 
         } catch (error) {
             console.log(error)
