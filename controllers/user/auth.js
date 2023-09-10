@@ -63,7 +63,7 @@ const adminController ={
                 expiresIn: 86400
             })
 
-            res.json({token, savedUser: {_id: savedUser._id, lastConnect, roles}})
+            res.json({token, userFound: {_id: userFound._id}})
 
         } catch (error) {
             console.log(error)
