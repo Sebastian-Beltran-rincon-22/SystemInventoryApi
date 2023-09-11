@@ -2,6 +2,7 @@ const express = require ('express')
 const router = express.Router()
 const adminController = require('../../controllers/user/auth')
 const verifySignup = require ('../../middlewares/verifySignup');
+const authJwt = require('../../middlewares/authJwt')
 
 router.use((req, res, next) => {
     res.header(
@@ -11,17 +12,11 @@ router.use((req, res, next) => {
     next();
     });
 
-router.post('/signup',[verifySignup.checkRoleExist],adminController.signup)
+router.post('/signup',[verifySignup.checkRoleExist, authJwt.isAdmin, authJwt.verifyToken, verifySignup.checkDupletUser],adminController.signup)
 router.post('/signin',[verifySignup.checkRoleExist],adminController.signin)
 
 
-router.delete('/:id', adminController.deleteUser)
-
-// router.get('/', superAdmincontroller.getAdmins)
-// router.get('/:id', superAdmincontroller.getById)
-// router.post('/', superAdmincontroller.createById)
-// router.patch('/:id', superAdmincontroller.updateById)
-// router.delete('/:id', superAdmincontroller.deleteById)
+router.delete('/:id',[ authJwt.isAdmin, authJwt.verifyToken], adminController.deleteUser)
 
 
 module.exports = router
