@@ -27,7 +27,7 @@ const productsController = {
 
     getProducts: async (req,res) => {
         try {
-            const products = await Products.find({})
+            const products = await Products.find({}).populate('category', 'filter')
             return res.status(200).json(products);
         } catch (error) {
             return res.status(500).json({msg:error.message})
@@ -38,7 +38,7 @@ const productsController = {
     getProductsById: async (req,res) => {
         try {
               const {id} = req.params
-              const product = await Products.findById(id)
+              const product = await Products.findById(id).populate('category', 'filter')
 
               if (!product) {
                 return res.status(404).json({ error: 'Product not found' });
