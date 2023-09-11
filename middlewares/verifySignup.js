@@ -1,4 +1,4 @@
-const {ROLE} = require ('../models/user/Role');
+const {ROLE} = require ('../models/user/role');
 const User = require('../models/user/user');
 
 const verifySignup = {

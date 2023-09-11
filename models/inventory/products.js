@@ -8,7 +8,8 @@ const productsSchema = new Schema ({
         required: true
     },
     imgProduct:{
-        type: String
+        type: String,
+        required: true
     },
     brand:{
         type: String
@@ -17,7 +18,8 @@ const productsSchema = new Schema ({
         type: String
     },
     price:{
-        type: Number
+        type: Number,
+        required: true
     },
     entryDate:{
         type: Date,

@@ -1,6 +1,7 @@
-const {Admin} = require('../models/user/Role')
+const {Admin} = require('../models/user/role')
 const User = require('../models/user/user')
 const Config = require('../config')
+const { name } = require('ejs')
 
 
 
@@ -19,7 +20,8 @@ const creatingRole = {
                 new Admin ({name: "admin"}).save()
             ])
 
-            console.log(values)
+            console.log(values);
+            console.log(name);
         } catch (error) {
             console.log(error)        
         }
@@ -28,7 +30,7 @@ const creatingRole = {
         try {
 
 
-            const userFound = await User.findOne({ email: Config.ADMIN_EMAIL });
+            const userFound = await User.findOne({ email: Config.ADMIN_EMAIL }).populate("roles");
             console.log(userFound);
 
             if (userFound) return;

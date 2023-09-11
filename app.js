@@ -1,10 +1,12 @@
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const express = require('express')
+const creatingRole = require ('./libs/initialSetup')
+//Routing 
 const user = require('./routers/user/user')
 const admin = require('./routers/user/auth')
-const creatingRole = require ('./libs/initialSetup')
-
+const category = require('./routers/inventory/category')
+const product = require('./routers/inventory/products')
 
 const app = express()
 creatingRole.createRoles()
@@ -25,7 +27,8 @@ app.use(bodyParser.json())
 
 app.use('/api/superAdmin',admin)
 app.use('/api/users', user)
-
+app.use('/api/category', category)
+app.use('/api/products', product)
 
 
 module.exports = app
