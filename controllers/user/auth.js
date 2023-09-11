@@ -36,6 +36,7 @@ const adminController ={
         const token = jwt.sign({id: savedUser._id}, Config.SECRET,{
             expiresIn: 86400 
         })
+
         res.status(200).json({token, savedUser: { _id: savedUser._id, nickName, email, password}}).populate("roles")
     }catch(error){
         return res.status(500).json(error.message)
