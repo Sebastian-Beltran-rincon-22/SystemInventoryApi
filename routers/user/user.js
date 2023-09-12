@@ -8,7 +8,7 @@ router.post('/create',[authJwt.verifyToken,authJwt.isAdmin,
     verifySignup.checkDupletUser, verifySignup.checkRoleExist],userController.register)
 
 
-router.get('/',[authJwt.verifyToken, authJwt.isAdmin],userController.getAdmin)
+router.get('/usersByRole',[authJwt.verifyToken, authJwt.isAdmin],userController.getUsersByRole)
 
 
 module.exports = router
