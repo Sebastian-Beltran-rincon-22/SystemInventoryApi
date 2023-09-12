@@ -33,7 +33,6 @@ const userSchema = new Schema ({
     roles:[{
         ref: "Admin",
         type: mongoose.Schema.Types.ObjectId,
-        default: "user"
     },
     ],
 
