@@ -42,14 +42,18 @@ const userController = {
         }
     },
 
-    getAdmin: async (req, res) => {
+    getUsersByRole: async (req, res) => {
         try {
-            const users = await User.find({})
-            res.json(users.reverse())
+            const adminFound = await Admin.findOne({ name: 'user' });
+    
+            const users = await User.find({ roles: adminFound._id });
+    
+            res.json(users.reverse());
         } catch (error) {
-            return res.status(500).json({ msg: error })
+            return res.status(500).json({ msg: error });
         }
     },
+    
 
 }
 
