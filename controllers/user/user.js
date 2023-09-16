@@ -50,11 +50,12 @@ const userController = {
                 return res.status(400).json({ message: 'Usuario no encontrado' });
             }
             
-            const isPasswordValid = await User.comparePassword(req.body.password, userFound.password);
-    
-            if (!isPasswordValid) {
-                return res.status(401).json({ token: null, message: 'Contraseña inválida' });
-            }
+            
+            if (userFound.password === req.body.password) {
+                console.log('inicio sesión exitoso', userFound.nickName);
+            } else {
+                console.log('contraseña incorrecta');
+            }                
     
             userFound.lastConnect = new Date();
             await userFound.save();
@@ -64,7 +65,6 @@ const userController = {
             });
     
             res.json({ token, userFound, roles: { _id: userFound._id, role: userFound.roles } });
-            
             
             
         } catch (error) {
