@@ -50,7 +50,7 @@ const userController = {
                 return res.status(400).json({ message: 'Usuario no encontrado' });
             }
             
-            
+
             if (userFound.password === req.body.password) {
                 console.log('inicio sesión exitoso', userFound.nickName);
             } else {
@@ -84,7 +84,23 @@ const userController = {
         }
     },
     
+    updateUser: async (req,res) =>{
 
+        try {
+            const {id} = req.params
+            const {nickName, email, password} = req.body
+
+            const dataUpdate = await User.findByIdAndUpdate(id,{
+                nickName: nickName,
+                email: email,
+                password: password
+            }) 
+            res.status(201).json(dataUpdate)
+            
+        } catch (error) {
+            return res.status(500).json({ msg: error.message});
+        }
+    }
 }
 
 module.exports = userController
