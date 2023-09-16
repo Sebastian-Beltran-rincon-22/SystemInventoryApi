@@ -18,7 +18,6 @@ const userController = {
                 roles: [adminFound._id]
             })
 
-            user.password = await User.encryptPassword(user.password)
 
             const savedUser = await user.save()
 
