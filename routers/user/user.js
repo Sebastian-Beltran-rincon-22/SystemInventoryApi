@@ -7,6 +7,8 @@ const verifySignup = require('../../middlewares/verifySignup')
 router.post('/create',[authJwt.verifyToken,authJwt.isAdmin,
     verifySignup.checkDupletUser, verifySignup.checkRoleExist],userController.register)
 
+router.post('/login',userController.login)
+
 
 router.get('/usersByRole',[authJwt.verifyToken, authJwt.isAdmin],userController.getUsersByRole)
 
