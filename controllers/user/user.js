@@ -20,21 +20,13 @@ const userController = {
 
 
             const savedUser = await user.save()
+            await savedUser.populate('roles')
 
             const token = jwt.sign({id: savedUser._id}, Config.SECRET,{
                 expiresIn: 86400
             })
 
-            return res.status(200).json({
-                token,
-                savedUser:{
-                _id: savedUser._id,
-                userName: savedUser.userName,
-                email: savedUser.email,
-                password: savedUser.password,
-                roles: savedUser.roles,
-                }
-            })
+            return res.status(200).json({ token, savedUser})
 
         } catch (error) {
             return res.status(500).json(error.message)
@@ -64,7 +56,7 @@ const userController = {
                 expiresIn: 86400
             });
     
-            res.json({ token, userFound, roles: { _id: userFound._id, role: userFound.roles } });
+            res.json({ token, userFound, });
             
             
         } catch (error) {
