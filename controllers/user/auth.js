@@ -43,33 +43,34 @@ const adminController ={
     }
     },
 
-    signin: async (req,res) =>{
+    signin: async (req, res) => {
         try {
-            
-            const userFound = await User.findOne({email: req.body.email}).populate("roles")
-            if (!userFound) return res.status(400).json({message: 'user not found '})
-
-            const mathPassword = await User.comparePassword(req.body.password, userFound.password)
-            if (!mathPassword) return res.status(401).json({token: null, message: 'invalid password '})
-
-            const user = await User.findOne({ email: req.body.email})
-            if (user){
-                user.lastConnect = new Date()
-                await user.save()
-            } else {
-                res.status(404).send('User not found')
+            const userFound = await User.findOne({ email: req.body.email }).populate("roles");
+    
+            if (!userFound) {
+                return res.status(400).json({ message: 'Usuario no encontrado' });
             }
-
-            const token = jwt.sign({id: userFound._id},Config.SECRET,{
+    
+            const isPasswordValid = await User.comparePassword(req.body.password, userFound.password);
+    
+            if (!isPasswordValid) {
+                return res.status(401).json({ token: null, message: 'Contraseña inválida' });
+            }
+    
+            userFound.lastConnect = new Date();
+            await userFound.save();
+    
+            const token = jwt.sign({ id: userFound._id }, Config.SECRET, {
                 expiresIn: 86400
-            })
-
-            res.json({token, userFound, roles: {_id: userFound._id, role: userFound.roles}})
-
+            });
+    
+            res.json({ token, userFound, roles: { _id: userFound._id, role: userFound.roles } });
+    
         } catch (error) {
-            console.log(error)
+            console.error(error);
+            res.status(500).json({ message: 'Error interno del servidor' });
         }
-    },
+    },    
 
 
     deleteUser: async (req, res) => {
