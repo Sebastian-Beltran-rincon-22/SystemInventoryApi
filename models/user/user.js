@@ -45,12 +45,6 @@ userSchema.statics.comparePassword = async (password, receivedPassword) => {
     return await bcrypt.compare(password, receivedPassword)
 }
 
-userSchema.pre("save", async function (next) {
-    const user = this;
-    if (!user.isModified("password")) {
-        return next();
-    }
-})
 
 module.exports = mongoose.model('User',userSchema)
 
