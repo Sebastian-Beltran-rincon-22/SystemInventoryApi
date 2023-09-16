@@ -9,6 +9,7 @@ router.post('/create',[authJwt.verifyToken,authJwt.isAdmin,
 
 router.post('/login',userController.login)
 
+router.patch('/:id', [authJwt.verifyToken, authJwt.isAdmin], userController.updateUser)
 
 router.get('/usersByRole',[authJwt.verifyToken, authJwt.isAdmin],userController.getUsersByRole)
 
