@@ -12,7 +12,7 @@ router.use((req, res, next) => {
     next();
     });
 
-router.post('/signup',[verifySignup.checkRoleExist, authJwt.isAdmin, authJwt.verifyToken, verifySignup.checkDupletUser],adminController.signup)
+router.post('/signup',[authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRoleExist, verifySignup.checkDupletUser],adminController.signup)
 router.post('/signin',[verifySignup.checkRoleExist],adminController.signin)
 
 
