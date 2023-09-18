@@ -64,7 +64,7 @@ const adminController ={
                 expiresIn: 86400
             });
     
-            res.json({ token, userFound, roles: { _id: userFound._id, role: userFound.roles } });
+            res.json({ token, userFound,});
     
         } catch (error) {
             console.error(error);

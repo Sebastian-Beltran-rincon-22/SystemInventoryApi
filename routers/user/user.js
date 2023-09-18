@@ -7,11 +7,13 @@ const verifySignup = require('../../middlewares/verifySignup')
 router.post('/create',[authJwt.verifyToken,authJwt.isAdmin,
     verifySignup.checkDupletUser, verifySignup.checkRoleExist],userController.register)
 
-router.post('/login',userController.login)
+//router.post('/login',userController.login)
 
 router.patch('/:id', [authJwt.verifyToken, authJwt.isAdmin], userController.updateUser)
 
 router.get('/usersByRole',[authJwt.verifyToken, authJwt.isAdmin],userController.getUsersByRole)
+
+router.post('/change-password/:userId',[authJwt.verifyToken, authJwt.isAdmin],userController.changePassword);
 
 
 module.exports = router

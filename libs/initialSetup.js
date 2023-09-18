@@ -2,18 +2,7 @@ const {Admin} = require('../models/user/role')
 const User = require('../models/user/user')
 const Config = require('../config')
 const { name } = require('ejs')
-const bcrypt = require('bcrypt')
 
-async function hashPassword(password) {
-    try {
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      return hashedPassword;
-    } catch (error) {
-      console.error('Error al encriptar la contraseña:', error);
-      throw error;
-    }
-  }
 
 const creatingRole = {
     
@@ -50,12 +39,11 @@ const creatingRole = {
             
             const admin = await Admin.findOne({name: 'admin'});
 
-            const hashedAdminPassword = await hashPassword(Config.ADMIN_PASSWORD);
 
             const userRegis = await User.create({
                 nickName: Config.ADMIN_USERNAME,
                 email: Config.ADMIN_EMAIL,
-                password: hashedAdminPassword,
+                password: Config.ADMIN_PASSWORD,
                 roles: [admin._id]
             });
 
