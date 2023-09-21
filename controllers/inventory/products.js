@@ -3,27 +3,34 @@ const Category = require('../../models/inventory/category')
 
 
 const productsController = {
-    //Create
     createProducts: async (req, res) => {
       try {
-        const { filter, ...productData } = req.body;
-        const categoryFound = await Category.findOne({ name:  filter});
-  
-  
-        if (!categoryFound) {
-          return res.status(400).json({ error: 'Category not found' });
+        const { category, ...productData } = req.body;
+        let categoryFound;
+    
+        if (category) {
+          categoryFound = await Category.findOne({ filter: category }); // Utiliza "filter" en la búsqueda
+          console.log('Category:', category);
+          console.log('Category Found:', categoryFound);
+    
+          if (!categoryFound) {
+            return res.status(400).json({ error: 'Category not found', categoryValue: category });
+          }
         }
-  
+    
         const product = await Products.create({
           ...productData,
-          category: categoryFound._id,
+          category: categoryFound ? categoryFound._id : undefined,
         });
-  
+    
         return res.status(200).json(product);
       } catch (error) {
         return res.status(500).json({ error: error.message });
       }
     },
+    
+    
+    
 
     getProducts: async (req,res) => {
         try {
