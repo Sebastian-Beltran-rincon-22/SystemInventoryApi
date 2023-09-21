@@ -51,12 +51,12 @@ const productsSchema = new Schema ({
     availability:{
         type: Boolean // Hacer Pruebas para ver si es necesario en Product 
     },
-    availableQuantity:{
+    quantity:{
         type: Number
     },
 
     category:{ // Relacion de uno a mucho => asignar Categoria para traer los productos con esa categoria
-        type: mongoose.Schema.Types.String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
     }
 
