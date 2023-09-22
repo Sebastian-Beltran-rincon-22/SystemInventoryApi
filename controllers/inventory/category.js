@@ -42,9 +42,28 @@ const categoryController = {
         } catch(error){
             return res.status(500).json({msg:error.message})
         }
+    },
+
+deleteCategoryForId: async (req, res) => {
+        try {
+        const { id } = req.params;
+    
+          // Verificar si la categoría existe antes de intentar eliminarla
+        const category = await Category.findById(id);
+    
+        if (!category) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+    
+          // Eliminar la categoría
+        await Category.deleteOne({ _id: id });
+    
+        return res.json({ msg: 'Category deleted' });
+        } catch (err) {
+        console.error(err);
+        return res.status(500).json({ msg: err.message });
+        }
     }
-
-
-}
+};
 
 module.exports = categoryController
