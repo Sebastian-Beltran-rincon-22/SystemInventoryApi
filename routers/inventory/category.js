@@ -7,5 +7,7 @@ router.post('/', [authJwt.verifyToken, authJwt.isAdmin], categoryController.crea
 router.get('/', categoryController.getCategory)
 router.get('/:id', categoryController.getCategoryForId)
 
+router.delete('/:id', [authJwt.verifyToken], categoryController.deleteCategoryForId)
+
 
 module.exports = router
