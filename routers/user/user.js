@@ -15,5 +15,7 @@ router.get('/usersByRole',[authJwt.verifyToken, authJwt.isAdmin],userController.
 
 router.post('/change-password/:userId',[authJwt.verifyToken, authJwt.isAdmin],userController.changePassword);
 
+router.delete('/:userId',[ authJwt.verifyToken, authJwt.isAdmin], userController.deleteUser)
+
 
 module.exports = router
