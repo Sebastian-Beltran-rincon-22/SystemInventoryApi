@@ -77,8 +77,17 @@ const userController = {
         } catch (error) {
             return res.status(500).json({ msg: error.message });
         }
-    }
+    },
 
+    deleteUser: async (req, res) => {
+        try {
+            const { userId } = req.params
+            await User.findByIdAndDelete(userId)
+            res.json({ msg: 'Delete' })
+        } catch (error) {
+            return res.status(500).json({ msg: error })
+        }
+    }
 }
 
 module.exports = userController

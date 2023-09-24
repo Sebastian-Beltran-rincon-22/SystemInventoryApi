@@ -16,7 +16,7 @@ router.post('/signup',[authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkR
 router.post('/signin',[verifySignup.checkRoleExist],adminController.signin)
 
 
-router.delete('/:id',[ authJwt.isAdmin, authJwt.verifyToken], adminController.deleteUser)
+
 
 
 module.exports = router
