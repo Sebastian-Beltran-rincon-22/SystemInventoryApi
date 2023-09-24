@@ -26,26 +26,29 @@ const authJwt = {
         }
     },
 
-    isAdmin : async (req,res, next) =>{
-        try{
-    
-        
-        const user = await User.findById(req.userId)
-        const roles = await Admin.find({_id: {$in: user.roles}})
-    
-        for (let i = 0; i < roles.length; i++){
-            if(roles[i].name === "admin") {
-                next()
-                return
+    isAdmin: async (req, res, next) => {
+        try {
+            const user = await User.findById(req.userId);
+            
+            if (!user) {
+                return res.status(403).json({ message: "User not found" });
             }
-        }
-        
-        return res.status(403).json({message: "Require Admin role"})
-        } catch(error){
+    
+            const roles = await Admin.find({ _id: { $in: user.roles } });
+    
+            for (let i = 0; i < roles.length; i++) {
+                if (roles[i].name === "admin") {
+                    next();
+                    return;
+                }
+            }
+    
+            return res.status(403).json({ message: "Require Admin role" });
+        } catch (error) {
             console.log(error);
             return res.status(500).send({ message: error });
         }
     }
-}
+}    
 
 module.exports = authJwt
