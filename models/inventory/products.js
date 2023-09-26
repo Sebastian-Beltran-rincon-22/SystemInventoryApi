@@ -23,7 +23,7 @@ const productsSchema = new Schema ({
         type: Number,
         validate:{
             validator: function ( value ){
-                return value > 0;
+                return value >= 1;
             },
             message: 'precio mayor a cero'
         }
@@ -32,7 +32,7 @@ const productsSchema = new Schema ({
         type: Number,
         validate:{
             validator: function ( value ){
-                return value > 0;
+                return value >= 1;
             },
             message: 'precio mayo a cero'
         }
