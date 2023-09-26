@@ -61,6 +61,16 @@ const productsController = {
         const { id } = req.params;
         const { category, ...updatedData } = req.body;
         let updatedProduct;
+
+        for (let i = 1; i <= 8; i++) {
+          const fieldName = `price${i}`;
+    
+          // Verifica si el campo de precio está presente y es igual a 0
+          if (fieldName in updatedData && updatedData[fieldName] === 0) {
+            // Elimina el campo de precio
+            delete updatedData[fieldName];
+          }
+        }
     
         if (category) {
           // Verificar si se proporciona una categoría
