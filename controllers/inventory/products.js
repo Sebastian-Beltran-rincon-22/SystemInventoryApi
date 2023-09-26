@@ -57,32 +57,43 @@ const productsController = {
     },
               
     updateProductsById: async (req, res) => {
-        try{
-            const {id} = req.params;
-            const { filter, ...updatedData } = req.body;
-            const categoryFound = await Category.findOne({ name: filter });
-        
-            if (!categoryFound) {
-                return res.status(400).json({ error: 'Category not found' });
-              }
-
-        const updatedProduct = await Products.findByIdAndUpdate(
+      try {
+        const { id } = req.params;
+        const { category, ...updatedData } = req.body;
+        let updatedProduct;
+    
+        if (category) {
+          // Verificar si se proporciona una categoría
+          const categoryFound = await Category.findOne({ $or: [{ name: category }, { _id: category }] });
+    
+          if (!categoryFound) {
+            return res.status(400).json({ error: 'Category not found' });
+          }
+    
+          updatedProduct = await Products.findByIdAndUpdate(
             id,
-                { ...updatedData, category: categoryFound._id },
-                { new: true }
-              );
-
-            if (!updatedProduct) {
-                return res.status(404).json({ error: 'Product not found' });
-            }
-
-        return res.status(200).json(updatedProduct);
+            { ...updatedData, category: categoryFound._id },
+            { new: true }
+          );
+        } else {
+          // Si no se proporciona una categoría, actualiza los otros campos
+          updatedProduct = await Products.findByIdAndUpdate(
+            id,
+            updatedData,
+            { new: true }
+          );
         }
-        
-        catch (error) {
-            return res.status(500).json({ error: error.message });
-    }
+    
+        if (!updatedProduct) {
+          return res.status(404).json({ error: 'Product not found' });
+        }
+    
+        return res.status(200).json(updatedProduct);
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     },
+    
 
 
     deleteProductsById: async (req, res) => {
