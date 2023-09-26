@@ -21,21 +21,10 @@ const productsSchema = new Schema ({
 
     price:{
         type: Number,
-        validate:{
-            validator: function ( value ){
-                return value >= 1;
-            },
-            message: 'precio mayor a cero'
-        }
+    
     },
     price2:{
         type: Number,
-        validate:{
-            validator: function ( value ){
-                return value >= 1;
-            },
-            message: 'precio mayo a cero'
-        }
     },
     price3:{
         type: Number,
